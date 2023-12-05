@@ -47,6 +47,6 @@ elif currency == str("PL"):
     result = round(amount_uah // UAH_PL)
     change = round(amount_uah % UAH_PL)
 #Результат обміну
-print(f'Сума отриманої валюти {result} {currency}, ваша решта {change} грн.')
 
-# Обмін валюти
+print(f'Сума отриманої валюти = {result:^1} {currency}')
+print(f"Ваша решта =  {change:>11} UAH")
