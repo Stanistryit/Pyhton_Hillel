@@ -1,3 +1,7 @@
+# Цікаво = 9
+# Складно = 6
+
+
 # Введення змінних
 UAH_USD = 37.75
 UAH_EUR = 40
@@ -24,27 +28,25 @@ currency = input("USD, EUR, PL: ")
 while currency not in ("USD", "EUR", "PL"):
     print("Ви ввели не коректну валюту.")
     currency = input("USD, EUR, PL: ")
-print(f"| {'Зверніть увагу!':^2} |")
-print(f'|{"Обмінник монети не видає!"}|')
 #Обмін на долари
 if currency == str("USD"):
     print(f"Ви обрали валюту USD")
     amount_uah = int(input('Введить кількість гривні: '))
     result = round(amount_uah // UAH_USD)
     change = round(amount_uah % UAH_USD)
-    print(f'Сума отриманої валюти {result:,} $, ваша решта {change} грн.!')
 # Обмін на євро
 elif currency == str('EUR'):
     print(f"Ви обрали валюту EUR")
     amount_uah =int(input('Введить кількість гривні: '))
     result = round(amount_uah // UAH_EUR)
     change = round(amount_uah % UAH_EUR)
-    print(f'Сума отриманої валюти {result} €, ваша решта {change} грн.!')
+#Обмін на злоті
 elif currency == str("PL"):
     print(f"Ви обрали валюту PL")
     amount_uah = int(input('Введить кількість гривні: '))
     result = round(amount_uah // UAH_PL)
     change = round(amount_uah % UAH_PL)
-    print(f'Сума отриманої валюти {result} zł, ваша решта {change} грн.!')
+#Результат обміну
+print(f'Сума отриманої валюти {result} {currency}, ваша решта {change} грн.')
 
 # Обмін валюти
