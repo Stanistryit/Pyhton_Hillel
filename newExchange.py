@@ -40,7 +40,7 @@ while True:
 
         # Результат обміну
         print(f'Сума отриманої валюти = {result:^1} {found_currency[0]}')
-        print(f"Ваша решта = {change:>12} UAH")
+        print(f"Ваша решта = {change:>15} UAH")
         break
     else:
         print("Невірна валюта. Спробуйте ще раз.")
