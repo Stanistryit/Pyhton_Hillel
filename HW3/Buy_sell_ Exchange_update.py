@@ -42,7 +42,7 @@ while True:
         print("1. Купівля")
         print("2. Продаж")
         operation = str(input("Введіть назву операції: "))
-        while operation not in (1, 2):
+        while operation not in ('Купівля', 'Продаж'):
             print("Ви зробили не коректний вибір!")
             operation = str(input("Введіть назву операції: "))
         if operation == 'Купівля':
