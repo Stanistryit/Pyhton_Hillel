@@ -41,11 +41,11 @@ while True:
         print("Яку операцію ви хочете виконати?")
         print("1. Купівля")
         print("2. Продаж")
-        operation = int(input("Введіть номер операції: "))
+        operation = str(input("Введіть назву операції: "))
         while operation not in (1, 2):
             print("Ви зробили не коректний вибір!")
-            operation = int(input("Введіть номер операції: "))
-        if operation == 1:
+            operation = str(input("Введіть назву операції: "))
+        if operation == 'Купівля':
             buy_price = found_currency[1]
             amount_uah = int(input('Введіть кількість гривні: '))
             result = amount_uah // buy_price #кількість валюти
@@ -120,11 +120,11 @@ while True:
                         print(f"Ви отримали {result:.0f} {found_currency[0]}, і {change:.2f} грн. решти!")
                         break
         #Продаж валюти
-        elif operation == 2:
+        elif operation == 'Продаж':
             sell_price = found_currency[2]
             amount_currency = int(input(f'Введіть кількість {found_currency[0]}: '))
             result = amount_currency * sell_price
-            print(f"Ви отримаєте {result:.2f} грн.")
+            print(f"Ви отримали {result:.2f} грн.")
             break
         else:
             print("Невірна валюта. Спробуйте ще раз.")
