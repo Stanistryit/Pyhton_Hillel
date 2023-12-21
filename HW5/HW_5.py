@@ -166,4 +166,49 @@ assert my_split("Karamba", "a") == ['K', 'r', 'mb', '']
 число градусув. Асерти на вас.
 
 
+Спробував зробити через зміну порядку символів в кортежах.
 """
+def rotate_matrix(matrix, degree):
+    """
+    Функція перевертає матрицю на задану кількість градусів.
+    Функція перевертає на кратну 90 кількість градусів, і має перевірку.
+    Аргументи:
+        matrix: Матриця для перевороту.
+        degrees: Кількість градусів кратна 90
+    Повертає:
+        Перевертуну матрицю на задану кількість градусів
+    """
+    if degree == 90:
+        rotate = range(len(matrix) - 1, -1, -1)
+    elif degree == 180:
+        rotate = range(len(matrix) - 1, -1, -1)
+        matrix = rotate_matrix(matrix, 90)
+    elif degree == 270:
+        rotate = range(len(matrix) - 1, -1 , -1)
+        matrix = rotate_matrix(matrix, 180)
+    else:
+        return print('Значення degree повинно бути кратне 90, 180 або 270')
+    new_matrix = []
+    for i in range(len(matrix)):
+        new_line = []
+        for j in rotate:
+            new_line.append(matrix[j][i])
+        new_matrix.append(new_line)
+    return new_matrix
+
+
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+assert rotate_matrix(matrix, 90) == [[7, 4, 1],
+                                            [8, 5, 2],
+                                            [9, 6, 3]]
+assert rotate_matrix(matrix, 180) == [[9, 8, 7],
+                                             [6, 5, 4],
+                                             [3, 2, 1]]
+assert rotate_matrix(matrix, 270) == [[3, 6, 9],
+                                             [2, 5, 8],
+                                             [1, 4, 7]]
