@@ -1,0 +1,14 @@
+{
+  "UAH": {
+    "buy": {
+      "USD": 36,
+      "EUR": 40,
+      "PLN": 9
+    },
+    "sell_percentage": {
+      "USD": 10,
+      "EUR": 5,
+      "PLN": 5
+    }
+  }
+}

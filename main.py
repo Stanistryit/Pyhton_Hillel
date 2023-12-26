@@ -1,75 +1,88 @@
-#
-# def rotate_matrix(matrix, degrees):
-#     """
-#     Функція перевертає матрицю на задану кількість градусів.
-#     Функція перевертає на кратну 90 кількість градусів, і має перевірку.
-#     Аргументи:
-#         matrix: Матриця для перевороту.
-#         degrees: Кількість градусів кратна 90
-#     Повертає:
-#         Перевертуну матрицю на задану кількість градусів
-#     """
-#     if degrees % 90 != 0 or degrees not in [90, 180, 270]:
-#         return print('Введена кількість градусів не кратна 90')
-#     rotations = degrees // 90
-#     for _ in range(rotations):
-#         num_rows = len(matrix)
-#         num_cols = len(matrix[0])
-#         rotated_matrix = []
-#         for _ in range(num_cols):
-#             row = [0] * num_rows
-#             rotated_matrix.append(row)
-#         for i in range(len(matrix)):
-#             for j in range(len(matrix[0])):
-#                 rotated_matrix[j][len(matrix) - 1 - i] = matrix[i][j]
-#         matrix = rotated_matrix
-#     return matrix
-def rotate_matrix(matrix, degree):
-    if degree == 90:
-        rotate = range(len(matrix)-1, -1, -1)
-    elif degree == 180:
-        rotate = range(len(matrix) - 1, -1, -1)
-        matrix = rotate_matrix(matrix, 90)
-    elif degree == 270:
-        rotate = range(len(matrix))
-        matrix = rotate_matrix(matrix, 180)
-    else:
-        return print('Значення degree повинно бути кратне 90, 180 або 270')
-    new_matrix = []
-    for i in range(len(matrix)):
-        new_line = []
-        for j in rotate:
-            new_line.append(matrix[j][i])
-        new_matrix.append(new_line)
-    if new_matrix:
-        return new_matrix
-    else:
-        print("Помилка!")
-# mat1 = [
-#     [1, 2, 3],
-#     [4, 5, 6],
-#     [7, 8, 9]
-# ]
-# mat3 = []
-# for i in range(len(mat1)):
-#     new_line = []
-#     for j in range(len(mat1)-1, -1, -1):
-#         new_line.append(mat1[j][i])
-#     mat3.append(new_line)
-# print(mat3)
-matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-print(rotate_matrix(matrix, 271))
-# assert rotate_matrix(matrix, 90) == [[7, 4, 1],
-#                                             [8, 5, 2],
-#                                             [9, 6, 3]]
-# assert rotate_matrix(matrix, 180) == [[9, 8, 7],
-#                                              [6, 5, 4],
-#                                              [3, 2, 1]]
-# assert rotate_matrix(matrix, 270) == [[3, 6, 9],
-#                                              [2, 5, 8],
-#                                              [1, 4, 7]]
+import json
+from decimal import Decimal, getcontext
+getcontext().prec = 6
+MULTIPLE = 50
 
+def load_currencies(file_path='currencies.json'):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+def calculate_sell_price(buy_price, sell_percentage):
+    buy_price = buy_price + (buy_price * sell_percentage / 100)
+    return buy_price
+
+def display_currency_rates(currencies):
+    print("Курс обміну валют на сьогодні:")
+    print(f"| Купівля | {'Валюта':^7} | {'Продаж':^7} |")
+    print("|---------|---------|---------|")
+    for currency, buy_price in currencies['UAH']['buy'].items():
+        sell_price = calculate_sell_price(buy_price, currencies['UAH']['sell_percentage'].get(currency, 0))
+        print(f"| {buy_price:^7.2f} | {currency:^7} | {sell_price:^7.2f} |")
+    print("|---------|---------|---------|")
+
+def buy_currency(buy_price, amount_uah):
+    buy_price = Decimal(buy_price)
+    amount_uah = Decimal(amount_uah)
+    result = amount_uah // buy_price
+    change = amount_uah % amount_uah
+    return result, change
+
+def sell_currency(sell_price, amount_currency):
+    return amount_currency * sell_price
+
+def round_currency_amount(result, change, buy_price):
+    buy_price = Decimal(buy_price)
+    if result < MULTIPLE:
+        dif_to_multiple = MULTIPLE - result
+        add_uah = dif_to_multiple * buy_price - change
+        rounded_result = result + dif_to_multiple
+        return rounded_result, add_uah
+    else:
+        multiple_amount = result / MULTIPLE
+        multiple_count = round(multiple_amount % 1, 2)
+
+        if multiple_count >= 0.50:
+            dif_to_multiple = MULTIPLE * (1 - multiple_count)
+            add_uah = dif_to_multiple * buy_price
+            rounded_result = result + dif_to_multiple
+        else:
+            dif_to_multiple = MULTIPLE * multiple_count
+            add_uah = dif_to_multiple * buy_price
+            rounded_result = result - dif_to_multiple
+
+        return rounded_result, add_uah
+
+def main():
+    currencies = load_currencies()
+    display_currency_rates(currencies)
+
+    name = input("Введіть ваше ім'я: ")
+
+    print(f'{name}, яку валюту бажаєте купити/продати?')
+    print("Доступні валюти: " + ', '.join(currencies['UAH']['buy'].keys()))
+
+    user_input = input("Введіть потрібну валюту: ").upper()
+    found_currency = currencies['UAH']['buy'].get(user_input)
+
+    if found_currency is not None:
+        operation = input("Яку операцію ви хочете виконати? (Buy/Sell): ").capitalize()
+
+        if operation == 'Buy':
+            sell_percentage = currencies['UAH']['sell_percentage'].get(user_input, 0)
+            buy_price = calculate_sell_price(currencies['UAH']['buy'][user_input], sell_percentage)
+            amount_uah = int(input('Введіть кількість гривні: '))
+            result, change = buy_currency(buy_price, amount_uah)
+            rounded_result, add_uah = round_currency_amount(result, change, buy_price)
+            print(f"Ви отримаєте {rounded_result:.0f} {user_input}, решта {add_uah:.2f} грн.")
+
+        elif operation == 'Sell':
+            sell_price = found_currency
+            amount_currency = int(input(f'Введіть кількість {user_input}: '))
+            result = sell_currency(sell_price, amount_currency)
+            print(f"Ви отримали {result:.2f} грн.")
+
+        else:
+            print("Некоректна операція. Спробуйте ще раз.")
+
+if __name__ == "__main__":
+    main()
