@@ -1,11 +1,16 @@
-def unlist(l):
-    flat_list = []
-    for sublist in l:
-        if isinstance(sublist, list):
-            flat_list.extend(unlist(sublist))
-        else:
-            flat_list.append(sublist)
-    return flat_list
+def unlist(lst):
+    result = []
 
-# assert flatten_list([1, [2, 3], [4, [5, 6]], 7]) == [1, 2, 3, 4, 5, 6, 7]
-assert unlist(["H", ["l"], ["l"], ["e"], "l"]) == ["H", "l", "l", "e", "l"]
+    for item in lst:
+        if isinstance(item, list):
+            result.extend(item)
+        elif isinstance(item, str):
+            result.extend(list(item))
+        else:
+            result.append(item)
+
+    return result
+
+# Перевірка
+
+assert unlist([['Vlad', 'Kira'], ['Dima', 'Dasha', ['Nikita']], 'Vova']) == ['Vlad', 'Kira', 'Dima', 'Dasha', ['Nikita'], 'V', 'o', 'v', 'a']
