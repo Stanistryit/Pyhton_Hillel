@@ -1,16 +1,13 @@
-def unlist(lst):
-    result = []
-
-    for item in lst:
-        if isinstance(item, list):
-            result.extend(item)
-        elif isinstance(item, str):
-            result.extend(list(item))
+def unlist(l):
+    flat_list = []
+    for sublist in l:
+        if isinstance(sublist, list):
+            flat_list.extend(unlist(sublist))
         else:
-            result.append(item)
-
-    return result
+            flat_list.append(sublist)
+    return flat_list
 
 # Перевірка
 
-assert unlist([['Vlad', 'Kira'], ['Dima', 'Dasha', ['Nikita']], 'Vova']) == ['Vlad', 'Kira', 'Dima', 'Dasha', ['Nikita'], 'V', 'o', 'v', 'a']
+assert unlist([['Vlad', 'Kira'], ['Dima', 'Dasha', ['Nikita']], 'Vova']) == ['Vlad', 'Kira', 'Dima', 'Dasha', 'Nikita', 'Vova']
+assert unlist(["H", ["l"], ["l"], ["e"], "l"]) == ["H", "l", "l", "e", "l"]
