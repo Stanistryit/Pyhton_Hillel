@@ -1,0 +1,24 @@
+{
+  "real_player": {
+    "name": "Stanis",
+    "deposit": 1000
+  },
+  "bots": [
+    {
+      "name": "R2-D2",
+      "deposit": 1000
+    },
+    {
+      "name": "BB-8",
+      "deposit": 1000
+    },
+    {
+      "name": "Chewbacca",
+      "deposit": 1000
+    },
+    {
+      "name": "Luke Skywalker",
+      "deposit": 1000
+    }
+  ]
+}

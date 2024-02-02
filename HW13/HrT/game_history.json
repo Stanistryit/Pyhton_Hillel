@@ -1,0 +1,42 @@
+[
+    {
+        "round": 1,
+        "real_player": {
+            "name": "Stanis",
+            "choice": "R",
+            "bet": 10.0,
+            "deposit": 1015.0
+        },
+        "bot_players": [
+            {
+                "name": "R2-D2",
+                "choice": "O",
+                "bet": 10.0,
+                "deposit": 990.0
+            },
+            {
+                "name": "BB-8",
+                "choice": "O",
+                "bet": 10.0,
+                "deposit": 990.0
+            },
+            {
+                "name": "Chewbacca",
+                "choice": "O",
+                "bet": 10.0,
+                "deposit": 990.0
+            },
+            {
+                "name": "Luke Skywalker",
+                "choice": "R",
+                "bet": 10.0,
+                "deposit": 1015.0
+            }
+        ],
+        "coin_side": "R",
+        "winners": [
+            "Stanis",
+            "Luke Skywalker"
+        ]
+    }
+]
