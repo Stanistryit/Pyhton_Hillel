@@ -175,5 +175,5 @@ for bot in bot_players:
     print(f"{bot.name}, Депозит: {bot.deposit}")
 
 game_instance = Game(real_player, bot_players)
-rounds = 1
+rounds = 1 #Кількість раундів
 game_instance.start_game(rounds)
