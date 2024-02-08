@@ -1,12 +1,10 @@
 import random
 import json
 import logging
+
 random.seed(1)
 
-"""
-Знаю, що можна зробити багато покращень.
-Головне питання, чи правильно я рухаюсь, і чи відповідає ця конструкція патерну Observer
-"""
+
 class Players:
     def __init__(self, json_file):
         self.json_file = json_file
@@ -15,6 +13,7 @@ class Players:
     def load_players(self, json_file):
         with open(json_file, 'r') as file:
             return json.load(file)
+
 
 class RealPlayer(Players):
     def __init__(self, json_file):
@@ -40,25 +39,28 @@ class RealPlayer(Players):
             choice = input(f"{self.name}, оберіть Орел чи Решка(Орел\Решка): ")
         return choice
 
+
 class Bot(Players):
     def __init__(self, json_file):
         super().__init__(json_file)
         bot_data = self.players_data['bots']
         self.name = bot_data['name']
         self.deposit = bot_data['deposit']
-
     def make_bet(self):
-        if self.deposit > 500:
+        if self.deposit >= 1000.0:
             bet = self.deposit * 0.1
-        else:
+        elif self.deposit >= 500.0:
             bet = self.deposit * 0.05
+        else:
+            bet = self.deposit * 0.03
         self.deposit -= bet
         return bet
 
     def make_choice(self):
         return 'Орел' if random.choice([True, False]) else 'Решка'
 
-class GameData(RealPlayer, Bot): #subject
+
+class GameData(RealPlayer, Bot):
     def __init__(self, json_file):
         super().__init__(json_file)
         self.real_player = RealPlayer(json_file)
@@ -68,6 +70,14 @@ class GameData(RealPlayer, Bot): #subject
         self.real_player_choice = ''
         self.bot_choice = ''
         self.total_bet = 0
+        self.observers = []
+
+    def attach(self, observer):
+        self.observers.append(observer)
+
+    def notify_observers(self):
+        for observer in self.observers:
+            observer.update()
 
     def update_player(self, player, bet, choice):
         if player == self.real_player:
@@ -77,11 +87,13 @@ class GameData(RealPlayer, Bot): #subject
             self.bot_bet = bet
             self.bot_choice = choice
         self.total_bet += bet
+        self.notify_observers()
 
     def win_pool(self):
         return self.total_bet
 
-class Game(GameData): #observer
+
+class Game(GameData):
     def __init__(self, json_file):
         super().__init__(json_file)
         self.logger = logging.getLogger('game_logger')
@@ -92,7 +104,8 @@ class Game(GameData): #observer
         self.logger.addHandler(file_handler)
 
     def update(self):
-        self.determine_winner()
+        if self.real_player_bet and self.bot_bet and self.real_player_choice and self.bot_choice:
+            self.determine_winner()  # Починаємо гру, якщо всі гравці зробили ставку та вибрали сторону монетки
 
     def flip_coin(self):
         return 'Орел' if random.choice([True, False]) else 'Решка'
@@ -121,6 +134,7 @@ class Game(GameData): #observer
             winner_names = ", ".join(winners)
             self.logger.info(f"Переможцем(ами) стає {winner_names} та кожен з них виграє {prize_per_winner}.")
         else:
+            win_amount = 0
             self.logger.info("Ніхто не переміг.")
             # Повернення ставок гравцям у разі нічиєї
             self.real_player.deposit += self.real_player_bet
@@ -171,13 +185,4 @@ class Game(GameData): #observer
                 player2_choice = self.bot.make_choice()
                 self.update_player(self.bot, player2_bet, player2_choice)
 
-                self.update()
-
 # Початок гри
-game = Game('players.json')
-game.play_again()
-#TODO Перенести логування в окремий метод!
-#TODO Старт і продовження гри = окремі методи
-"""
-
-"""
