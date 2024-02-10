@@ -1,0 +1,4 @@
+2024-02-10 12:09:03,919 - INFO - Player Stanis bets 10.0 on Heads
+2024-02-10 12:09:03,919 - INFO - Bot R2-D2 bets 10 on Heads
+2024-02-10 12:09:03,919 - INFO - Coin flipped: Heads
+2024-02-10 12:09:03,919 - INFO - Round winners: Stanis, R2-D2

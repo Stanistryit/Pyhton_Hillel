@@ -1,0 +1,12 @@
+{
+  "real_player": {
+    "name": "Stanis",
+    "deposit": 1000
+  },
+  "bots": [
+    {
+      "name": "R2-D2",
+      "deposit": 1000
+    }
+  ]
+}
